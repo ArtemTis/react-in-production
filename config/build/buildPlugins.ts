@@ -3,8 +3,9 @@ import path from "path";
 import webpack from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import { BuildOptions } from "./types/config";
+import ReactRefreshPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 
-export function buildPlugins({paths, isDev}: BuildOptions) : webpack.WebpackPluginInstance[] {
+export function buildPlugins({ paths, isDev }: BuildOptions): webpack.WebpackPluginInstance[] {
 
     return [
         new HtmlWebpackPlugin({
@@ -17,6 +18,8 @@ export function buildPlugins({paths, isDev}: BuildOptions) : webpack.WebpackPlug
         }),
         new webpack.DefinePlugin({
             __IS_DEV__: JSON.stringify(isDev),
-        })
+        }),
+        isDev && (new ReactRefreshPlugin(),
+            new webpack.HotModuleReplacementPlugin())
     ]
 }
